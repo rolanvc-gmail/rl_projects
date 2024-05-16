@@ -3,9 +3,12 @@ from Agent import Agent
 import numpy as np
 import torch as T
 from utils import plot_learning
-
+import os
+from datetime import datetime
 
 if __name__ == "__main__":
+    start = datetime.now()
+    print(f"{start.strftime('%H:%M:%S')}")
     if T.cuda.is_available():
         print("CUDA is available")
         print(f"Using {T.cuda.get_device_name()}")
@@ -32,5 +35,10 @@ if __name__ == "__main__":
         avg_score = np.mean(scores[-100:])
         print('episode', i, 'score %.2f' % score, 'average_score %.2f' % avg_score, 'epsilon %.2f' % agent.epsilon)
     x = [i+1 for i in range(n_games)]
-    filename = 'lunar_lander_1.png'
+    filename = os.path.join(os.getcwd(), 'plots', 'lunar_lander_1.png')
     plot_learning(x, scores, eps_history, filename)
+    end = datetime.now()
+    diff = (end - start).total_seconds()
+    mins = diff // 60
+    secs = diff % 60
+    print(f"finished in {mins} minutes and {secs} seconds")
